@@ -84,20 +84,22 @@ void putPixel(int x, int y, Rgb colour)
 {
     float w=WIDTH;
     float h=HEIGHT;
-
     float nx = (x) / (w / 2) - 1;
     float ny = (h - (y) - 1) / (h / 2) - 1;
     float nx2 = (x+1) / (w / 2) - 1;
     float ny2 = (h - (y-1) - 1) / (h / 2) - 1;
+    float oX = nx-nx2;
+    float oY = ny-ny2;
 
     glLineWidth(2);
     glColor3f(colour.r, colour.g, colour.b);
-    glBegin(GL_LINES);
-        glVertex3f(nx,   ny,   0.0);
-        glVertex3f(nx2,  ny2,  0.0);
+    glBegin(GL_QUADS);
+        glVertex3f(nx, ny,   0.0);
+        glVertex3f(nx, ny+oY,   0.0);
+        glVertex3f(nx-oX, ny+oY,   0.0);
+        glVertex3f(nx-oX, ny,   0.0);
     glEnd();
 }
-
 
 
 ///
@@ -231,7 +233,7 @@ void Render()
     glClear(GL_COLOR_BUFFER_BIT);          // Применим изменение цвета
 
     //Нарисуем белую линию
-    line(110, 110, 700, 400, {1.0, 1.0, 1.0});
+    line(100, 400, 700, 100, {1.0, 1.0, 1.0});
 
     //Нарисуем зелёную точку
     putPixel(400, 300, {0.0, 1.0, 0.0});
@@ -242,14 +244,14 @@ void Render()
     Rgb color;
 
     //Возьмём цвет с кончика линии
-    getPixel(110, 110, color);
+    getPixel(101, 399, color);
     //Нарисуем точку прочитанного цвета в другом месте
     putPixel(500, 100, color);
 
     //Возьмём цвет с зелёной точки
     getPixel(400, 300, color);
     //И поставим его рядом с новой точкой
-    putPixel(503, 100, color);
+    putPixel(510, 100, color);
 
 }
 
